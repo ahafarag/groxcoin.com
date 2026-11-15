@@ -214,7 +214,7 @@
         <h3><span lang-en>How it works</span><span lang-ar>بتشتغل إزاي</span></h3>
         <p><span lang-en>Grox is solo mining: there is no pool taking a cut, and nobody splits your block. The time per block is the network difficulty divided by your hashrate.</span><span lang-ar>Grox تعدين فردي: مفيش pool بياخد نسبة، ومحدش بيقسم البلوك بتاعك. الوقت لكل بلوك = صعوبة الشبكة ÷ سرعة جهازك.</span></p>
         <p><span lang-en>Mining is luck: you may find a block much sooner or later than this. Difficulty adjusts every block, so the numbers move with the network.</span><span lang-ar>التعدين حظ: ممكن تلاقي بلوك أسرع أو أبطأ من كده بكتير. الصعوبة بتتغير كل بلوك، فالأرقام بتتحرك مع الشبكة.</span></p>
-        <p id="calcOff" class="hide"><span lang-en>Live network numbers are unavailable right now. Use the calculator in the <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">explorer</a>.</span><span lang-ar>أرقام الشبكة المباشرة مش متاحة دلوقتي. استخدم الحاسبة في <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">المستكشف</a>.</span></p>
+        <p id="calcOff" class="hide"><span lang-en>Using network numbers from <span class="snapd"></span> (difficulty ≈ <span class="snapdiff"></span>). For live numbers, use the calculator in the <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">explorer</a>.</span><span lang-ar>بنستخدم أرقام الشبكة بتاريخ <span class="snapd"></span> (الصعوبة ≈ <span class="snapdiff"></span>). للأرقام المباشرة استخدم الحاسبة في <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">المستكشف</a>.</span></p>
         <p><a href="https://d7vz9sqd109ta.cloudfront.net/#/leaderboard" data-explorer="/#/leaderboard"><span lang-en>Blocks-found leaderboard →</span><span lang-ar>لوحة أبطال البلوكات ←</span></a></p>
       </div>
     </div>
@@ -313,6 +313,8 @@
     const m = Math.round(s / 60); return ar ? 'من ' + m + ' دقيقة' : m + ' min ago';
   }
 
+  // Fallback when live stats are unavailable (snapshot, updated by hand)
+  const SNAPSHOT = { height: 8790, difficulty: 7404121, hashrate: 123402, reward: 4.7465, date: '15 Nov 2026' };
   let NET = null;
   function render() {
     if (NET) {
@@ -332,16 +334,19 @@
   }
   function calc() {
     const v = parseFloat(($('hs').value || '').replace(',', '.')) * Number($('hsUnit').value);
-    const ok = NET && v > 0 && isFinite(v);
-    const t1 = ok ? NET.difficulty / v : NaN, perDay = ok ? 86400 / t1 : 0;
+    const N = NET || SNAPSHOT;
+    const ok = v > 0 && isFinite(v);
+    const t1 = ok ? N.difficulty / v : NaN, perDay = ok ? 86400 / t1 : 0;
     $('cEvery').textContent = ok ? dur(t1) : '—';
     $('cDay').textContent = ok ? fmt(perDay, perDay < 10 ? 2 : 1) : '—';
-    $('cGrox').textContent = ok ? fmt(perDay * NET.reward * 0.95, 2) : '—';
-    $('cShare').textContent = ok ? fmt(v / (NET.hashrate + v) * 100, 2) + '%' : '—';
+    $('cGrox').textContent = ok ? fmt(perDay * N.reward * 0.95, 2) : '—';
+    $('cShare').textContent = ok ? fmt(v / (N.hashrate + v) * 100, 2) + '%' : '—';
     lsSet('grox.hs', $('hs').value); lsSet('grox.hsUnit', $('hsUnit').value);
   }
   $('hs').value = lsGet('grox.hs') || '1000';
   $('hsUnit').value = lsGet('grox.hsUnit') || '1';
+  document.querySelectorAll('.snapd').forEach(e => e.textContent = SNAPSHOT.date);
+  document.querySelectorAll('.snapdiff').forEach(e => e.textContent = fmt(SNAPSHOT.difficulty / 1e6, 1) + 'M');
   $('hs').oninput = calc; $('hsUnit').onchange = calc;
 
   async function load() {
