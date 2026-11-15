@@ -217,7 +217,7 @@
       </div>
       <div class="card">
         <h3><span lang-en>Paid by the block itself</span><span lang-ar>الدفع من البلوك نفسه</span></h3>
-        <p><span lang-en>P2Pool tracks everyone's recent work. When the pool finds a block, that block pays each recent miner directly to their own address. The pool never holds coins: no balance, no minimum payout, no withdrawal.</span><span lang-ar>P2Pool بيسجّل شغل كل معدّن مؤخراً. لما البول يلاقي بلوك، البلوك نفسه بيدفع لكل واحد على عنوانه مباشرة. البول عمره ما بيمسك فلوس: مفيش رصيد ولا حد أدنى ولا سحب.</span></p>
+        <p><span lang-en>P2Pool tracks everyone's recent work. When the pool finds a block, that block pays each recent miner directly to their own address. The pool never holds coins: no balance, no minimum payout, no withdrawal. Like all P2Pools, mining addresses are visible on the share chain, so use a wallet just for mining.</span><span lang-ar>P2Pool بيسجّل شغل كل معدّن مؤخراً. لما البول يلاقي بلوك، البلوك نفسه بيدفع لكل واحد على عنوانه مباشرة. البول عمره ما بيمسك فلوس: مفيش رصيد ولا حد أدنى ولا سحب. وزي أي P2Pool، عناوين التعدين بتبان على سلسلة الأسهم، فاستخدم محفظة للتعدين بس.</span></p>
       </div>
       <div class="card">
         <h3><span lang-en>No pool fee</span><span lang-ar>مفيش رسوم للبول</span></h3>
@@ -390,12 +390,16 @@
     if (!POOL || !POOL.enabled || !POOL.pool) return;
     const P = POOL.pool, ar = document.documentElement.lang === 'ar';
     $('poolLive').classList.remove('hide');
-    $('pR').textContent = hr(P.hashRate || 0);
+    // While the share chain sits at its minimum difficulty, P2Pool's own estimate is just that floor;
+    // use the hashrate measured from the miners connected to pool.groxcoin.com instead.
+    const N = POOL.node || {};
+    const rate = (P.sidechainDifficulty && P.sidechainDifficulty <= 110000 && N.hashrate_15m) ? N.hashrate_15m : (P.hashRate || 0);
+    $('pR').textContent = hr(rate);
     $('pM').textContent = fmt(P.miners || 0, 0);
     $('pB').textContent = fmt(P.totalBlocksFound || 0, 0);
     $('pL').textContent = P.lastBlockFoundTime ? ago(P.lastBlockFoundTime) : (ar ? 'لسه' : 'not yet');
     const d = NET ? NET.difficulty : SNAPSHOT.difficulty;
-    $('pE').textContent = P.hashRate > 0 ? dur(d / P.hashRate) : '—';
+    $('pE').textContent = rate > 0 ? dur(d / rate) : '—';
     const bl = (POOL.blocks || []).slice(0, 5).map(b => '<a href="' + EXPLORER + '/#/block/' + b.height + '">#' + fmt(b.height, 0) + '</a>').join(' · ');
     $('pList').innerHTML = bl ? ' · ' + (ar ? 'آخر بلوكات: ' : 'recent blocks: ') + bl : '';
   }
