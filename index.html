@@ -390,10 +390,10 @@
     if (!POOL || !POOL.enabled || !POOL.pool) return;
     const P = POOL.pool, ar = document.documentElement.lang === 'ar';
     $('poolLive').classList.remove('hide');
-    // While the share chain sits at its minimum difficulty, P2Pool's own estimate is just that floor;
-    // use the hashrate measured from the miners connected to pool.groxcoin.com instead.
+    // P2Pool's own estimate comes from the share-chain difficulty, which has a floor and is far off for a small pool;
+    // show the hashrate measured from the miners connected to pool.groxcoin.com.
     const N = POOL.node || {};
-    const rate = (P.sidechainDifficulty && P.sidechainDifficulty <= 110000 && N.hashrate_15m) ? N.hashrate_15m : (P.hashRate || 0);
+    const rate = N.hashrate_15m > 0 ? N.hashrate_15m : (P.hashRate || 0);
     $('pR').textContent = hr(rate);
     $('pM').textContent = fmt(P.miners || 0, 0);
     $('pB').textContent = fmt(P.totalBlocksFound || 0, 0);
