@@ -52,8 +52,8 @@
   .notice.upg { border: 1px solid rgba(242,181,68,.45); background: rgba(242,181,68,.08); }
   .notice.upg b { color: var(--gold-2); }
   .hero { padding: 56px 0 28px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
-  .hero-logo { display: block; width: 100%; max-width: 300px; border-radius: 40px; margin: 0 auto; box-shadow: 0 20px 70px rgba(240,180,60,.18); }
-  h1 { font-size: clamp(36px, 6vw, 62px); line-height: 1.08; margin: 0 0 18px; }
+  .hero-logo { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; max-width: 300px; border-radius: 40px; margin: 0 auto; box-shadow: 0 20px 70px rgba(240,180,60,.18); }
+  h1 { font-size: clamp(32px, 6vw, 62px); line-height: 1.08; margin: 0 0 18px; }
   h1 .hl { color: var(--gold); }
   .lead { color: var(--muted); font-size: 19px; max-width: 640px; margin: 0 0 28px; }
   .cta { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -81,6 +81,7 @@
   pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-x: auto; margin: 10px 0 0; direction: ltr; text-align: left; }
   pre code { word-break: normal; white-space: pre; }
   .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid > *, .calc > * { min-width: 0; }
   .field { display: flex; gap: 8px; margin: 8px 0; }
   .field input, .field select { background: var(--bg-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font: inherit; font-family: var(--mono); }
   .field input { flex: 1; min-width: 0; font-size: 20px; }
@@ -102,6 +103,7 @@
   html[lang=ar] [lang-en] { display: none; }
   .hide { display: none !important; }
   @media (max-width: 860px) {
+    .lead { font-size: 17px; } .cta .btn { flex: 1 1 auto; justify-content: center; }
     .hero { grid-template-columns: 1fr; padding-top: 28px; } .hero-logo { max-width: 88px; border-radius: 18px; margin: 0; order: -1; }
     .stats { grid-template-columns: repeat(2, 1fr); } .calc { grid-template-columns: 1fr; } .menu { display: none; }
   }
