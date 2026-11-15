@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grox (GROX) | Fair CPU mining on your everyday computer</title>
+<meta name="description" content="Grox (GROX) is a private coin you mine with any CPU. RandomX v2, 1-minute blocks, 21M max supply. Official website: downloads, mining guide, live network stats and calculator.">
+<link rel="canonical" href="https://groxcoin.com/">
+<link rel="icon" type="image/png" href="images/grox-logo.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://groxcoin.com/">
+<meta property="og:title" content="Grox (GROX) | Fair CPU mining">
+<meta property="og:description" content="A private coin you mine with any CPU. No rigs, no farms: every computer gets a real chance to find blocks.">
+<meta property="og:image" content="https://groxcoin.com/images/grox-logo.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b0c0f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Grox (GROX)","url":"https://groxcoin.com/",
+ "sameAs":["https://github.com/ahafarag/grox-coin","https://t.me/grox_coin","https://discord.gg/V5PaU3SSY","https://bitcointalk.org/index.php?topic=5599717.0"]}
+</script>
+<style>
+  :root {
+    --bg: #0b0c0f; --bg-2: #101217; --panel: #14171d; --panel-2: #1a1e25; --line: #252a33;
+    --text: #ece9e2; --muted: #9097a1; --faint: #5d636d;
+    --gold: #f2b544; --gold-2: #ffd27a; --gold-ink: #1a1305; --red: #ff6b6b; --green: #5ad18c;
+    --sans: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; }
+  a { color: var(--gold); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  nav { display: flex; align-items: center; gap: 18px; padding: 20px 0; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .18em; color: var(--text); text-decoration: none; }
+  .mark { width: 34px; height: 34px; border-radius: 8px; flex: none; }
+  .spacer { flex: 1; }
+  .menu { display: flex; gap: 18px; flex-wrap: wrap; }
+  .menu a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; }
+  .menu a:hover { color: var(--text); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 12px; border: 1px solid var(--line);
+         background: var(--panel-2); color: var(--text); text-decoration: none; font-weight: 600; cursor: pointer; font: inherit; }
+  .btn:hover { border-color: var(--faint); }
+  .btn.primary { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: var(--gold-ink); border-color: var(--gold); }
+  .btn.small { padding: 8px 12px; font-size: 14px; }
+  .notice { border-radius: 14px; padding: 14px 18px; margin: 8px 0 0; font-size: 15px; }
+  .notice.safe { border: 1px solid rgba(255,107,107,.45); background: rgba(255,107,107,.08); }
+  .notice.safe b { color: #ffb3b3; }
+  .notice.upg { border: 1px solid rgba(242,181,68,.45); background: rgba(242,181,68,.08); }
+  .notice.upg b { color: var(--gold-2); }
+  .hero { padding: 56px 0 28px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: center; }
+  .hero-logo { display: block; width: 100%; max-width: 300px; border-radius: 40px; margin: 0 auto; box-shadow: 0 20px 70px rgba(240,180,60,.18); }
+  h1 { font-size: clamp(36px, 6vw, 62px); line-height: 1.08; margin: 0 0 18px; }
+  h1 .hl { color: var(--gold); }
+  .lead { color: var(--muted); font-size: 19px; max-width: 640px; margin: 0 0 28px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 18px 0 0; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .stat .k { color: var(--muted); font-size: 13px; }
+  .stat .v { font-family: var(--mono); font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .live { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+  section { padding: 44px 0; }
+  h2 { font-size: 28px; margin: 0 0 18px; }
+  .sub { color: var(--muted); margin: -8px 0 20px; max-width: 720px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card p { margin: 0 0 10px; color: var(--muted); }
+  .card p:last-child { margin-bottom: 0; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(242,181,68,.15); color: var(--gold-2); margin-bottom: 8px; }
+  .n { font-family: var(--mono); color: var(--gold); font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { color: var(--muted); width: 38%; }
+  code, .mono { font-family: var(--mono); font-size: 13px; word-break: break-all; }
+  pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-x: auto; margin: 10px 0 0; direction: ltr; text-align: left; }
+  pre code { word-break: normal; white-space: pre; }
+  .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field { display: flex; gap: 8px; margin: 8px 0; }
+  .field input, .field select { background: var(--bg-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font: inherit; font-family: var(--mono); }
+  .field input { flex: 1; min-width: 0; font-size: 20px; }
+  .big { font-family: var(--mono); font-size: 32px; font-weight: 700; color: var(--gold); margin: 4px 0 14px; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; }
+  .kv .k { color: var(--muted); }
+  .kv .v { font-family: var(--mono); text-align: end; }
+  .note { color: var(--faint); font-size: 13px; margin-top: 12px; }
+  details { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 10px 0 0; }
+  .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .links a { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; text-decoration: none; color: var(--text); font-weight: 600; }
+  .links a .d { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+  .links a:hover { border-color: var(--gold); }
+  footer { color: var(--faint); font-size: 13px; padding: 40px 0 60px; border-top: 1px solid var(--line); margin-top: 30px; }
+  [lang-ar] { display: none; }
+  html[lang=ar] [lang-ar] { display: initial; }
+  html[lang=ar] [lang-en] { display: none; }
+  .hide { display: none !important; }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 28px; } .hero-logo { max-width: 160px; margin: 0; order: -1; }
+    .stats { grid-template-columns: repeat(2, 1fr); } .calc { grid-template-columns: 1fr; } .menu { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#"><img class="mark" src="images/grox-logo.png" alt="Grox">GROX</a>
+    <div class="menu">
+      <a href="#start"><span lang-en>Start</span><span lang-ar>ابدأ</span></a>
+      <a href="#mine"><span lang-en>Mining</span><span lang-ar>التعدين</span></a>
+      <a href="#calc"><span lang-en>Calculator</span><span lang-ar>الحاسبة</span></a>
+      <a href="#specs"><span lang-en>Specs</span><span lang-ar>المواصفات</span></a>
+      <a href="#faq"><span lang-en>FAQ</span><span lang-ar>أسئلة</span></a>
+      <a href="#community"><span lang-en>Community</span><span lang-ar>المجتمع</span></a>
+    </div>
+    <div class="spacer"></div>
+    <a class="btn small" href="https://github.com/ahafarag/grox-coin">GitHub</a>
+    <button class="btn small" id="lang">عربي</button>
+  </nav>
+
+  <div class="notice safe">
+    <span lang-en><b>This is the official Grox website: groxcoin.com.</b> Any other grox domain is fake. Downloads are only on <a href="https://github.com/ahafarag/grox-coin/releases/latest">GitHub releases</a>, each with a SHA256 checksum. Never type your 25 words into any website, including this one.</span>
+    <span lang-ar><b>ده الموقع الرسمي لـ Grox: groxcoin.com.</b> أي دومين تاني باسم grox مزيّف. التحميل بس من <a href="https://github.com/ahafarag/grox-coin/releases/latest">GitHub</a>، وكل ملف معاه SHA256. متكتبش الـ25 كلمة في أي موقع، ولا حتى هنا.</span>
+  </div>
+
+  <div class="notice upg" id="upg">
+    <span lang-en><b>Network upgrade at block 12,000<span class="eta"></span>.</b> All nodes and miners must run <b>v1.2.0 or newer</b> (v1.2.6 recommended). Older versions stop following the network at that block.</span>
+    <span lang-ar><b>تحديث الشبكة عند البلوك 12,000<span class="eta"></span>.</b> كل النودز والمعدّنين لازم يشغّلوا <b>v1.2.0 أو أحدث</b> (ويُفضَّل v1.2.6). النسخ القديمة هتقف عند البلوك ده.</span>
+  </div>
+
+  <header class="hero">
+    <div>
+      <h1><span lang-en>Mine <span class="hl">Grox</span><br>on your everyday computer</span><span lang-ar>عدّن <span class="hl">Grox</span><br>من جهازك العادي</span></h1>
+      <p class="lead"><span lang-en>A private coin you mine with any CPU. No mining rigs, no farms: every computer gets a real chance to find blocks, and every block pays the finder directly.</span><span lang-ar>عملة رقمية خاصة بتتعدّن بأي معالج. مفيش أجهزة تعدين ولا مزارع: كل كمبيوتر ليه فرصة حقيقية يلاقي بلوكات، وكل بلوك بيدفع للي لقاه على طول.</span></p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/ahafarag/grox-coin/releases/latest">⬇ <span lang-en>Download for Windows / Linux</span><span lang-ar>تحميل لويندوز / لينكس</span></a>
+        <a class="btn" href="#start"><span lang-en>How to start</span><span lang-ar>إزاي تبدأ</span></a>
+        <a class="btn" href="https://d7vz9sqd109ta.cloudfront.net" data-explorer><span lang-en>Block explorer</span><span lang-ar>مستكشف البلوكات</span></a>
+      </div>
+    </div>
+    <img class="hero-logo" src="images/grox-logo.png" alt="Grox logo" width="300" height="300">
+  </header>
+
+  <div id="net" class="hide">
+    <div class="stats">
+      <div class="stat"><div class="k"><span lang-en>Block height</span><span lang-ar>عدد البلوكات</span></div><div class="v" id="sH">—</div></div>
+      <div class="stat"><div class="k"><span lang-en>Network hashrate</span><span lang-ar>سرعة الشبكة</span></div><div class="v" id="sR">—</div></div>
+      <div class="stat"><div class="k"><span lang-en>Difficulty</span><span lang-ar>الصعوبة</span></div><div class="v" id="sD">—</div></div>
+      <div class="stat"><div class="k"><span lang-en>Block reward</span><span lang-ar>مكافأة البلوك</span></div><div class="v" id="sW">—</div></div>
+      <div class="stat"><div class="k"><span lang-en>Last block</span><span lang-ar>آخر بلوك</span></div><div class="v" id="sT">—</div></div>
+    </div>
+    <div class="live"><span class="dot"></span><span lang-en>Live from the Grox network</span><span lang-ar>مباشر من شبكة Grox</span></div>
+  </div>
+
+  <section id="start">
+    <h2><span lang-en>Start in 3 steps</span><span lang-ar>٣ خطوات وتبدأ</span></h2>
+    <div class="grid">
+      <div class="card"><div class="n">01</div><h3><span lang-en>Install</span><span lang-ar>ثبّت</span></h3><p><span lang-en>Windows: run the Grox Wallet installer. Linux: one install command.</span><span lang-ar>ويندوز: شغّل برنامج التثبيت. لينكس: أمر واحد.</span></p></div>
+      <div class="card"><div class="n">02</div><h3><span lang-en>Create a wallet</span><span lang-ar>اعمل محفظة</span></h3><p><span lang-en>Pick a password and write your 25 words on paper. They are your coins.</span><span lang-ar>اختار كلمة سر واكتب الـ25 كلمة على ورقة. دول هما فلوسك.</span></p></div>
+      <div class="card"><div class="n">03</div><h3><span lang-en>Press Start mining</span><span lang-ar>دوس ابدأ التعدين</span></h3><p><span lang-en>Your computer searches for blocks. Rewards land straight in your wallet.</span><span lang-ar>جهازك بيدوّر على بلوكات، والمكافأة بتنزل في محفظتك على طول.</span></p></div>
+    </div>
+  </section>
+
+  <section id="mine">
+    <h2><span lang-en>Ways to mine</span><span lang-ar>طرق التعدين</span></h2>
+    <p class="sub"><span lang-en>Everything runs on your own computer: your node, your wallet, your keys. Each block you find pays your address directly.</span><span lang-ar>كل حاجة بتشتغل على جهازك: النود والمحفظة والمفاتيح. كل بلوك تلاقيه بيدفع لعنوانك على طول.</span></p>
+    <div class="grid">
+      <div class="card">
+        <span class="tag"><span lang-en>Easiest</span><span lang-ar>الأسهل</span></span>
+        <h3>Grox Wallet (Windows)</h3>
+        <p><span lang-en>Wallet, node and mining in one window. Download <code>GroxWallet-Setup-…-win-x64.exe</code>, create a wallet, press Start mining.</span><span lang-ar>المحفظة والنود والتعدين في شباك واحد. نزّل <code>GroxWallet-Setup-…-win-x64.exe</code>، اعمل محفظة، ودوس ابدأ التعدين.</span></p>
+        <p><a href="https://github.com/ahafarag/grox-coin/blob/main/docs/WINDOWS.md"><span lang-en>Windows guide →</span><span lang-ar>دليل ويندوز ←</span></a></p>
+      </div>
+      <div class="card">
+        <span class="tag"><span lang-en>Fastest</span><span lang-ar>الأسرع</span></span>
+        <h3>XMRig (rx/grox)</h3>
+        <p><span lang-en>Official XMRig 6.26.0 with the Grox patch, 0% donation, built by GitHub Actions. Keep your Grox node running, then:</span><span lang-ar>XMRig 6.26.0 الرسمي مع تعديل Grox، تبرّع 0%، ومبني على GitHub Actions. سيب نود Grox شغّال، وبعدين:</span></p>
+        <pre><code>xmrig --daemon -o 127.0.0.1:19881 -a rx/grox --coin GROX -u &lt;your G… address&gt;</code></pre>
+      </div>
+      <div class="card">
+        <span class="tag">Linux / WSL</span>
+        <h3><span lang-en>Command line</span><span lang-ar>سطر الأوامر</span></h3>
+        <p><span lang-en>Ubuntu 22.04 / 24.04 or WSL on Windows. Install, start the node, mine with the built-in miner or XMRig.</span><span lang-ar>Ubuntu 22.04 / 24.04 أو WSL على ويندوز. ثبّت، شغّل النود، وعدّن بالمعدّن المدمج أو XMRig.</span></p>
+        <p><a href="https://github.com/ahafarag/grox-coin/blob/main/docs/GUIDE.md"><span lang-en>Step-by-step guide →</span><span lang-ar>الدليل خطوة بخطوة ←</span></a> · <a href="https://github.com/ahafarag/grox-coin/blob/main/docs/GUIDE.ar.md">العربية</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="calc">
+    <h2><span lang-en>Mining calculator</span><span lang-ar>حاسبة التعدين</span></h2>
+    <div class="calc">
+      <div class="card">
+        <h3><span lang-en>Your hashrate</span><span lang-ar>سرعة جهازك</span></h3>
+        <div class="field"><input id="hs" inputmode="decimal" value="1000" aria-label="hashrate">
+          <select id="hsUnit" aria-label="unit"><option value="1">H/s</option><option value="1000">kH/s</option><option value="1000000">MH/s</option></select></div>
+        <div class="note" style="margin-top:0"><span lang-en>Use the number your Grox Wallet or XMRig shows. A modern 8-core CPU often does 3–10 kH/s.</span><span lang-ar>اكتب الرقم اللي بيظهر في محفظة Grox أو XMRig. معالج حديث بـ8 أنوية غالبًا بيعمل 3–10 kH/s.</span></div>
+        <div style="margin-top:18px;color:var(--muted)"><span lang-en>One block about every</span><span lang-ar>بلوك تقريبًا كل</span></div>
+        <div class="big" id="cEvery">—</div>
+        <div class="kv">
+          <div class="k"><span lang-en>Blocks per day</span><span lang-ar>بلوكات في اليوم</span></div><div class="v" id="cDay">—</div>
+          <div class="k"><span lang-en>GROX per day (95% to you)</span><span lang-ar>GROX في اليوم (95% ليك)</span></div><div class="v" id="cGrox">—</div>
+          <div class="k"><span lang-en>Share of the network</span><span lang-ar>نصيبك من الشبكة</span></div><div class="v" id="cShare">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span lang-en>How it works</span><span lang-ar>بتشتغل إزاي</span></h3>
+        <p><span lang-en>Grox is solo mining: there is no pool taking a cut, and nobody splits your block. The time per block is the network difficulty divided by your hashrate.</span><span lang-ar>Grox تعدين فردي: مفيش pool بياخد نسبة، ومحدش بيقسم البلوك بتاعك. الوقت لكل بلوك = صعوبة الشبكة ÷ سرعة جهازك.</span></p>
+        <p><span lang-en>Mining is luck: you may find a block much sooner or later than this. Difficulty adjusts every block, so the numbers move with the network.</span><span lang-ar>التعدين حظ: ممكن تلاقي بلوك أسرع أو أبطأ من كده بكتير. الصعوبة بتتغير كل بلوك، فالأرقام بتتحرك مع الشبكة.</span></p>
+        <p id="calcOff" class="hide"><span lang-en>Live network numbers are unavailable right now. Use the calculator in the <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">explorer</a>.</span><span lang-ar>أرقام الشبكة المباشرة مش متاحة دلوقتي. استخدم الحاسبة في <a href="https://d7vz9sqd109ta.cloudfront.net/#/calc" data-explorer="/#/calc">المستكشف</a>.</span></p>
+        <p><a href="https://d7vz9sqd109ta.cloudfront.net/#/leaderboard" data-explorer="/#/leaderboard"><span lang-en>Blocks-found leaderboard →</span><span lang-ar>لوحة أبطال البلوكات ←</span></a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="specs">
+    <h2><span lang-en>Specs</span><span lang-ar>المواصفات</span></h2>
+    <div class="card"><table>
+      <tr><td>Ticker</td><td><b>GROX</b></td></tr>
+      <tr><td><span lang-en>Proof of work</span><span lang-ar>التعدين</span></td><td><span lang-en>RandomX v2, Grox variant (CPU). Stock Monero miners don't work.</span><span lang-ar>RandomX v2 بنسخة Grox (معالج). معدّنات Monero العادية مش بتشتغل.</span></td></tr>
+      <tr><td><span lang-en>Block time</span><span lang-ar>وقت البلوك</span></td><td><span lang-en>1 minute</span><span lang-ar>دقيقة</span></td></tr>
+      <tr><td><span lang-en>Max supply</span><span lang-ar>أقصى عدد</span></td><td><span lang-en>21,000,000 GROX, hard cap, no tail emission</span><span lang-ar>21,000,000 GROX، حد نهائي، من غير إصدار دائم</span></td></tr>
+      <tr><td><span lang-en>Block reward</span><span lang-ar>مكافأة البلوك</span></td><td><span lang-en>≈ 4.76 GROX at start, slowly decreasing over years</span><span lang-ar>≈ 4.76 GROX في البداية، وبتقل ببطء على سنين</span></td></tr>
+      <tr><td><span lang-en>Privacy</span><span lang-ar>الخصوصية</span></td><td><span lang-en>Monero technology: stealth addresses, ring signatures (16), RingCT</span><span lang-ar>تقنية Monero: عناوين مخفية، توقيعات حلقية (16)، مبالغ مخفية</span></td></tr>
+      <tr><td><span lang-en>Premine / dev fund</span><span lang-ar>للمطوّر</span></td><td><span lang-en>5% once (block 2) and 5% of each block, enforced by every node</span><span lang-ar>5% مرة واحدة (البلوك 2) و5% من كل بلوك، وكل الشبكة بتتأكد منهم</span></td></tr>
+      <tr><td><span lang-en>Addresses</span><span lang-ar>العناوين</span></td><td><span lang-en>start with <code>G</code></span><span lang-ar>بتبدأ بـ <code>G</code></span></td></tr>
+      <tr><td><span lang-en>Ports</span><span lang-ar>البورتات</span></td><td>P2P 19880 · RPC 19881</td></tr>
+      <tr><td><span lang-en>License</span><span lang-ar>الرخصة</span></td><td><span lang-en>Open source (BSD-3), built on Monero and RandomX</span><span lang-ar>مفتوحة المصدر (BSD-3)، مبنية على Monero و RandomX</span></td></tr>
+    </table></div>
+  </section>
+
+  <section id="devfund">
+    <h2><span lang-en>Transparent dev fund</span><span lang-ar>صندوق المطوّر مكشوف</span></h2>
+    <p class="sub"><span lang-en>From block 12,000 the 5% goes to a dedicated dev fund wallet. Its view key is public: anyone can see every payment it receives, nobody can spend with it. It also holds the 100,000 GROX community reserve for bounties and contests.</span><span lang-ar>من البلوك 12,000 الـ5% بتروح لمحفظة مخصوصة للمطوّر. مفتاح العرض بتاعها منشور: أي حد يقدر يشوف كل اللي بيدخلها، ومحدش يقدر يصرف منها بيه. وفيها كمان احتياطي المجتمع 100,000 GROX للمكافآت والمسابقات.</span></p>
+    <div class="card">
+      <div class="mono"><span style="color:var(--muted)">Address</span><br>GDGSHJXsxp8Y3EnLmGMnMcjLs5Qry6H5vibokRCFxKzNbZkggGkNYjd4iHwoMcJkuQKrsVN1Yt7mQY9s6AM5KVaZFLaUw5Y</div><br>
+      <div class="mono"><span style="color:var(--muted)">View key</span><br>bb0dd5b0061a6c00f23586a5f11c6b08dbd557369137240449d990c89fe59f02</div>
+      <p class="note"><a href="https://d7vz9sqd109ta.cloudfront.net/#/tx/b755b1875bd6d587d03b4f8c8218c2ac06381e51e116eafb105e0e136c99a97d" data-explorer="/#/tx/b755b1875bd6d587d03b4f8c8218c2ac06381e51e116eafb105e0e136c99a97d"><span lang-en>Community reserve transaction (block 4,211) →</span><span lang-ar>معاملة احتياطي المجتمع (البلوك 4,211) ←</span></a></p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2><span lang-en>Questions</span><span lang-ar>أسئلة شائعة</span></h2>
+    <details><summary><span lang-en>Do I need a mining rig or a GPU?</span><span lang-ar>محتاج جهاز تعدين أو كارت شاشة؟</span></summary>
+      <p><span lang-en>No. Grox uses RandomX v2, made for ordinary CPUs. A laptop or office PC can find blocks.</span><span lang-ar>لأ. Grox بتستخدم RandomX v2 المعمول للمعالجات العادية. لابتوب أو كمبيوتر مكتب يقدر يلاقي بلوكات.</span></p></details>
+    <details><summary><span lang-en>My antivirus flags the miner. Is it safe?</span><span lang-ar>الأنتي فيرس بيعترض على المعدّن. هل هو آمن؟</span></summary>
+      <p><span lang-en>Many antivirus programs flag any crypto miner as "potentially unwanted". Grox mines only when you press Start. Download only from GitHub releases and check the SHA256 checksum.</span><span lang-ar>برامج أنتي فيرس كتير بتعتبر أي معدّن "برنامج غير مرغوب". Grox بيعدّن بس لما تدوس ابدأ. نزّل من GitHub بس واتأكد من SHA256.</span></p></details>
+    <details><summary><span lang-en>Can anyone see my balance?</span><span lang-ar>حد يقدر يشوف رصيدي؟</span></summary>
+      <p><span lang-en>No. Payments are private, like Monero. Nobody can look up a balance from an address. Your IP address is visible to the nodes you connect to, like any peer-to-peer network.</span><span lang-ar>لأ. المدفوعات خاصة زي Monero. محدش يقدر يعرف رصيد من عنوان. الـIP بتاعك بيبان للنودز اللي بتتصل بيها، زي أي شبكة peer-to-peer.</span></p></details>
+    <details><summary><span lang-en>Where can I buy or trade GROX?</span><span lang-ar>أشتري أو أتداول GROX فين؟</span></summary>
+      <p><span lang-en>Grox is in its mining phase. Any listing will be announced only on this website and the official channels below. Ignore anyone offering GROX in private messages.</span><span lang-ar>Grox دلوقتي في مرحلة التعدين. أي إدراج هيتعلن بس هنا وفي القنوات الرسمية تحت. تجاهل أي حد بيعرض عليك GROX في رسايل خاصة.</span></p></details>
+    <details><summary><span lang-en>Why are there a premine and a dev fund?</span><span lang-ar>ليه فيه premine وصندوق للمطوّر؟</span></summary>
+      <p><span lang-en>They fund development, servers and community rewards. Both are consensus rules visible to everyone, and the dev fund wallet's view key is public.</span><span lang-ar>بيمولوا التطوير والسيرفرات ومكافآت المجتمع. الاتنين قواعد في الشبكة أي حد يشوفها، ومفتاح العرض لمحفظة المطوّر منشور.</span></p></details>
+  </section>
+
+  <section id="community">
+    <h2><span lang-en>Official links</span><span lang-ar>اللينكات الرسمية</span></h2>
+    <div class="links">
+      <a href="https://github.com/ahafarag/grox-coin">GitHub<span class="d"><span lang-en>Code and releases</span><span lang-ar>الكود والتحميلات</span></span></a>
+      <a href="https://d7vz9sqd109ta.cloudfront.net" data-explorer><span lang-en>Explorer</span><span lang-ar>المستكشف</span><span class="d"><span lang-en>Blocks, transactions, leaderboard</span><span lang-ar>البلوكات والمعاملات ولوحة الأبطال</span></span></a>
+      <a href="https://discord.gg/V5PaU3SSY">Discord<span class="d"><span lang-en>Chat and mining help</span><span lang-ar>دردشة ومساعدة في التعدين</span></span></a>
+      <a href="https://t.me/grox_community">Telegram<span class="d"><span lang-en>@grox_community group</span><span lang-ar>جروب @grox_community</span></span></a>
+      <a href="https://t.me/grox_coin">Telegram<span class="d"><span lang-en>@grox_coin news</span><span lang-ar>أخبار @grox_coin</span></span></a>
+      <a href="https://t.me/grox_coin_bot">Telegram bot<span class="d">@grox_coin_bot</span></a>
+      <a href="https://bitcointalk.org/index.php?topic=5599717.0">Bitcointalk<span class="d"><span lang-en>[ANN] thread</span><span lang-ar>موضوع الإعلان [ANN]</span></span></a>
+    </div>
+    <p class="note"><span lang-en>Admins never DM you first and never ask for your 25 words.</span><span lang-ar>الأدمنز عمرهم ما هيبعتولك الأول، وعمرهم ما هيطلبوا الـ25 كلمة.</span></p>
+  </section>
+
+  <footer>
+    <span lang-en>Grox is a fair, community-driven coin, mined on everyday computers. Open source (BSD-3), built on Monero and RandomX. Nothing here is financial advice. Use at your own risk, see the <a href="https://github.com/ahafarag/grox-coin/blob/main/DISCLAIMER.md">disclaimer</a>.</span>
+    <span lang-ar>Grox عملة عادلة بيعدّنها المجتمع من أجهزته العادية. مفتوحة المصدر (BSD-3)، ومبنية على Monero و RandomX. مفيش هنا أي نصيحة مالية، والاستخدام على مسؤوليتك (<a href="https://github.com/ahafarag/grox-coin/blob/main/DISCLAIMER.md">التفاصيل</a>).</span>
+    <br>© <span id="yr">2026</span> groxcoin.com
+  </footer>
+</div>
+<script>
+  // Explorer base; switch to https://explorer.groxcoin.com once that subdomain is live
+  const EXPLORER = 'https://d7vz9sqd109ta.cloudfront.net';
+  const FORK_HEIGHT = 12000;
+  const $ = id => document.getElementById(id);
+  const KEY = 'grox.lang';
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  function setLang(l) {
+    document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+    $('lang').textContent = l === 'ar' ? 'English' : 'عربي'; lsSet(KEY, l); render();
+  }
+  $('lang').onclick = () => setLang(document.documentElement.lang === 'ar' ? 'en' : 'ar');
+  document.querySelectorAll('[data-explorer]').forEach(a => { a.href = EXPLORER + (a.dataset.explorer || ''); });
+  $('yr').textContent = new Date().getFullYear();
+
+  const fmt = (n, d) => Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  function hr(h) { return h >= 1e6 ? fmt(h / 1e6, 2) + ' MH/s' : h >= 1e3 ? fmt(h / 1e3, 1) + ' kH/s' : fmt(h, 0) + ' H/s'; }
+  function dur(s) {
+    const ar = document.documentElement.lang === 'ar';
+    const u = ar ? ['ثانية', 'دقيقة', 'ساعة', 'يوم'] : ['s', 'min', 'h', 'days'];
+    if (s < 90) return fmt(s, 0) + ' ' + u[0];
+    if (s < 5400) return fmt(s / 60, 0) + ' ' + u[1];
+    if (s < 172800) return fmt(s / 3600, 1) + ' ' + u[2];
+    return fmt(s / 86400, 1) + ' ' + u[3];
+  }
+  function ago(ts) {
+    const s = Math.max(0, Date.now() / 1000 - ts), ar = document.documentElement.lang === 'ar';
+    if (s < 60) return ar ? 'دلوقتي' : 'just now';
+    const m = Math.round(s / 60); return ar ? 'من ' + m + ' دقيقة' : m + ' min ago';
+  }
+
+  let NET = null;
+  function render() {
+    if (NET) {
+      $('sH').textContent = fmt(NET.height, 0); $('sR').textContent = hr(NET.hashrate);
+      $('sD').textContent = fmt(NET.difficulty / 1e6, 2) + 'M'; $('sW').textContent = fmt(NET.reward, 2);
+      $('sT').textContent = ago(NET.last_block_time);
+      const left = FORK_HEIGHT - NET.height;
+      if (left <= 0) { $('upg').classList.add('hide'); }
+      else {
+        const when = new Date(Date.now() + left * 60000);
+        const ar = document.documentElement.lang === 'ar';
+        const d = when.toLocaleString(ar ? 'ar-EG' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+        document.querySelectorAll('.eta').forEach(e => e.textContent = (ar ? ' (فاضل ' : ' (') + fmt(left, 0) + (ar ? ' بلوك، حوالي ' : ' blocks to go, about ') + d + ')');
+      }
+    }
+    calc();
+  }
+  function calc() {
+    const v = parseFloat(($('hs').value || '').replace(',', '.')) * Number($('hsUnit').value);
+    const ok = NET && v > 0 && isFinite(v);
+    const t1 = ok ? NET.difficulty / v : NaN, perDay = ok ? 86400 / t1 : 0;
+    $('cEvery').textContent = ok ? dur(t1) : '—';
+    $('cDay').textContent = ok ? fmt(perDay, perDay < 10 ? 2 : 1) : '—';
+    $('cGrox').textContent = ok ? fmt(perDay * NET.reward * 0.95, 2) : '—';
+    $('cShare').textContent = ok ? fmt(v / (NET.hashrate + v) * 100, 2) + '%' : '—';
+    lsSet('grox.hs', $('hs').value); lsSet('grox.hsUnit', $('hsUnit').value);
+  }
+  $('hs').value = lsGet('grox.hs') || '1000';
+  $('hsUnit').value = lsGet('grox.hsUnit') || '1';
+  $('hs').oninput = calc; $('hsUnit').onchange = calc;
+
+  async function load() {
+    try {
+      const r = await fetch(EXPLORER + '/api/info', { cache: 'no-store' });
+      if (!r.ok) throw 0;
+      NET = await r.json();
+      $('net').classList.remove('hide'); $('calcOff').classList.add('hide');
+    } catch (e) {
+      if (!NET) $('calcOff').classList.remove('hide');
+    }
+    render();
+  }
+  let l = lsGet(KEY) || ((navigator.language || '').startsWith('ar') ? 'ar' : 'en');
+  setLang(l);
+  load(); setInterval(load, 30000);
+</script>
+</body>
+</html>
