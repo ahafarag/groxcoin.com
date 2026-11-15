@@ -198,6 +198,16 @@
   <section id="pool">
     <h2><span lang-en>Pool mining</span><span lang-ar>التعدين في البول</span> <span class="tag" style="vertical-align:middle">beta</span></h2>
     <p class="sub"><span lang-en>Small computer? Mine with others on our decentralized P2Pool and get paid every time the pool finds a block, instead of waiting for your own.</span><span lang-ar>جهازك صغير؟ عدّن مع غيرك على البول اللامركزي بتاعنا (P2Pool) واقبض كل ما البول يلاقي بلوك، بدل ما تستنى بلوك لوحدك.</span></p>
+    <div id="poolLive" class="hide" style="margin-bottom:14px">
+      <div class="stats">
+        <div class="stat"><div class="k"><span lang-en>Pool hashrate</span><span lang-ar>سرعة البول</span></div><div class="v" id="pR">—</div></div>
+        <div class="stat"><div class="k"><span lang-en>Miners</span><span lang-ar>المعدّنين</span></div><div class="v" id="pM">—</div></div>
+        <div class="stat"><div class="k"><span lang-en>Blocks found</span><span lang-ar>بلوكات لقاها البول</span></div><div class="v" id="pB">—</div></div>
+        <div class="stat"><div class="k"><span lang-en>Last pool block</span><span lang-ar>آخر بلوك للبول</span></div><div class="v" id="pL">—</div></div>
+        <div class="stat"><div class="k"><span lang-en>Expected block every</span><span lang-ar>بلوك متوقع كل</span></div><div class="v" id="pE">—</div></div>
+      </div>
+      <div class="live"><span class="dot"></span><span lang-en>Live from pool.groxcoin.com</span><span lang-ar>مباشر من pool.groxcoin.com</span><span id="pList"></span></div>
+    </div>
     <div class="grid">
       <div class="card">
         <h3><span lang-en>Connect XMRig</span><span lang-ar>وصّل XMRig</span></h3>
@@ -356,7 +366,7 @@
         document.querySelectorAll('.eta').forEach(e => e.textContent = (ar ? ' (فاضل ' : ' (') + fmt(left, 0) + (ar ? ' بلوك، حوالي ' : ' blocks to go, about ') + d + ')');
       }
     }
-    calc();
+    calc(); renderPool();
   }
   function calc() {
     const v = parseFloat(($('hs').value || '').replace(',', '.')) * Number($('hsUnit').value);
@@ -375,6 +385,23 @@
   document.querySelectorAll('.snapdiff').forEach(e => e.textContent = fmt(SNAPSHOT.difficulty / 1e6, 1) + 'M');
   $('hs').oninput = calc; $('hsUnit').onchange = calc;
 
+  let POOL = null;
+  function renderPool() {
+    if (!POOL || !POOL.enabled || !POOL.pool) return;
+    const P = POOL.pool, ar = document.documentElement.lang === 'ar';
+    $('poolLive').classList.remove('hide');
+    $('pR').textContent = hr(P.hashRate || 0);
+    $('pM').textContent = fmt(P.miners || 0, 0);
+    $('pB').textContent = fmt(P.totalBlocksFound || 0, 0);
+    $('pL').textContent = P.lastBlockFoundTime ? ago(P.lastBlockFoundTime) : (ar ? 'لسه' : 'not yet');
+    const d = NET ? NET.difficulty : SNAPSHOT.difficulty;
+    $('pE').textContent = P.hashRate > 0 ? dur(d / P.hashRate) : '—';
+    const bl = (POOL.blocks || []).slice(0, 5).map(b => '<a href="' + EXPLORER + '/#/block/' + b.height + '">#' + fmt(b.height, 0) + '</a>').join(' · ');
+    $('pList').innerHTML = bl ? ' · ' + (ar ? 'آخر بلوكات: ' : 'recent blocks: ') + bl : '';
+  }
+  async function loadPool() {
+    try { const r = await fetch(EXPLORER + '/api/pool', { cache: 'no-store' }); if (r.ok) { POOL = await r.json(); renderPool(); } } catch (e) {}
+  }
   async function load() {
     try {
       const r = await fetch(EXPLORER + '/api/info', { cache: 'no-store' });
@@ -389,6 +416,7 @@
   let l = lsGet(KEY) || ((navigator.language || '').startsWith('ar') ? 'ar' : 'en');
   setLang(l);
   load(); setInterval(load, 30000);
+  loadPool(); setInterval(loadPool, 30000);
 </script>
 </body>
 </html>
