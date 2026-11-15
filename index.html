@@ -79,7 +79,7 @@
   td:first-child { color: var(--muted); width: 38%; }
   code, .mono { font-family: var(--mono); font-size: 13px; word-break: break-all; }
   pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-x: auto; margin: 10px 0 0; direction: ltr; text-align: left; }
-  pre code { word-break: normal; white-space: pre; }
+  pre code { white-space: pre-wrap; word-break: break-all; }
   .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .grid > *, .calc > * { min-width: 0; }
   .field { display: flex; gap: 8px; margin: 8px 0; }
@@ -116,6 +116,7 @@
     <div class="menu">
       <a href="#start"><span lang-en>Start</span><span lang-ar>ابدأ</span></a>
       <a href="#mine"><span lang-en>Mining</span><span lang-ar>التعدين</span></a>
+      <a href="#pool"><span lang-en>Pool</span><span lang-ar>البول</span></a>
       <a href="#calc"><span lang-en>Calculator</span><span lang-ar>الحاسبة</span></a>
       <a href="#specs"><span lang-en>Specs</span><span lang-ar>المواصفات</span></a>
       <a href="#faq"><span lang-en>FAQ</span><span lang-ar>أسئلة</span></a>
@@ -194,6 +195,27 @@
     </div>
   </section>
 
+  <section id="pool">
+    <h2><span lang-en>Pool mining</span><span lang-ar>التعدين في البول</span> <span class="tag" style="vertical-align:middle">beta</span></h2>
+    <p class="sub"><span lang-en>Small computer? Mine with others on our decentralized P2Pool and get paid every time the pool finds a block, instead of waiting for your own.</span><span lang-ar>جهازك صغير؟ عدّن مع غيرك على البول اللامركزي بتاعنا (P2Pool) واقبض كل ما البول يلاقي بلوك، بدل ما تستنى بلوك لوحدك.</span></p>
+    <div class="grid">
+      <div class="card">
+        <h3><span lang-en>Connect XMRig</span><span lang-ar>وصّل XMRig</span></h3>
+        <p><span lang-en>No node, no sign-up. Just XMRig and your Grox address:</span><span lang-ar>من غير نود ولا تسجيل. XMRig وعنوانك بس:</span></p>
+        <pre><code>xmrig -o pool.groxcoin.com:3333 -a rx/grox -u &lt;your G… address&gt;</code></pre>
+        <p class="note"><span lang-en>Windows: open a terminal in the XMRig folder and run the same command with xmrig.exe. Stop the Grox Wallet app's own mining first.</span><span lang-ar>ويندوز: افتح terminal في فولدر XMRig وشغّل نفس الأمر بـ xmrig.exe. وقّف التعدين في برنامج Grox Wallet الأول.</span></p>
+      </div>
+      <div class="card">
+        <h3><span lang-en>Paid by the block itself</span><span lang-ar>الدفع من البلوك نفسه</span></h3>
+        <p><span lang-en>P2Pool tracks everyone's recent work. When the pool finds a block, that block pays each recent miner directly to their own address. The pool never holds coins: no balance, no minimum payout, no withdrawal.</span><span lang-ar>P2Pool بيسجّل شغل كل معدّن مؤخراً. لما البول يلاقي بلوك، البلوك نفسه بيدفع لكل واحد على عنوانه مباشرة. البول عمره ما بيمسك فلوس: مفيش رصيد ولا حد أدنى ولا سحب.</span></p>
+      </div>
+      <div class="card">
+        <h3><span lang-en>No pool fee</span><span lang-ar>مفيش رسوم للبول</span></h3>
+        <p><span lang-en>The only cut is the network's usual 5% dev fund, the same as solo mining. The pool is in beta; solo mining works exactly as before.</span><span lang-ar>بس الـ5% المعتادة لصندوق المطوّر، زي التعدين الفردي بالظبط. البول تجريبي، والتعدين الفردي شغّال زي ما هو.</span></p>
+      </div>
+    </div>
+  </section>
+
   <section id="calc">
     <h2><span lang-en>Mining calculator</span><span lang-ar>حاسبة التعدين</span></h2>
     <div class="calc">
@@ -212,7 +234,7 @@
       </div>
       <div class="card">
         <h3><span lang-en>How it works</span><span lang-ar>بتشتغل إزاي</span></h3>
-        <p><span lang-en>Grox is solo mining: there is no pool taking a cut, and nobody splits your block. The time per block is the network difficulty divided by your hashrate.</span><span lang-ar>Grox تعدين فردي: مفيش pool بياخد نسبة، ومحدش بيقسم البلوك بتاعك. الوقت لكل بلوك = صعوبة الشبكة ÷ سرعة جهازك.</span></p>
+        <p><span lang-en>Solo: every block you find is all yours, and the time per block is the network difficulty divided by your hashrate. Pool: you get your share of every pool block, so smaller payments arrive much more often. Over time both pay about the same.</span><span lang-ar>فردي: أي بلوك تلاقيه كله ليك، والوقت لكل بلوك = صعوبة الشبكة ÷ سرعة جهازك. البول: بتاخد نصيبك من كل بلوك يلاقيه البول، يعني مبالغ أصغر بتيجي أسرع بكتير. وعلى المدى الطويل الاتنين بيدّوا تقريباً نفس الدخل.</span></p>
         <p><span lang-en>Mining is luck: you may find a block much sooner or later than this. Difficulty adjusts every block, so the numbers move with the network.</span><span lang-ar>التعدين حظ: ممكن تلاقي بلوك أسرع أو أبطأ من كده بكتير. الصعوبة بتتغير كل بلوك، فالأرقام بتتحرك مع الشبكة.</span></p>
         <p id="calcOff" class="hide"><span lang-en>Using network numbers from <span class="snapd"></span> (difficulty ≈ <span class="snapdiff"></span>). For live numbers, use the calculator in the <a href="https://explorer.groxcoin.com/#/calc" data-explorer="/#/calc">explorer</a>.</span><span lang-ar>بنستخدم أرقام الشبكة بتاريخ <span class="snapd"></span> (الصعوبة ≈ <span class="snapdiff"></span>). للأرقام المباشرة استخدم الحاسبة في <a href="https://explorer.groxcoin.com/#/calc" data-explorer="/#/calc">المستكشف</a>.</span></p>
         <p><a href="https://explorer.groxcoin.com/#/leaderboard" data-explorer="/#/leaderboard"><span lang-en>Blocks-found leaderboard →</span><span lang-ar>لوحة أبطال البلوكات ←</span></a></p>
@@ -225,6 +247,7 @@
     <div class="card"><table>
       <tr><td>Ticker</td><td><b>GROX</b></td></tr>
       <tr><td><span lang-en>Proof of work</span><span lang-ar>التعدين</span></td><td><span lang-en>RandomX v2, Grox variant (CPU). Stock Monero miners don't work.</span><span lang-ar>RandomX v2 بنسخة Grox (معالج). معدّنات Monero العادية مش بتشتغل.</span></td></tr>
+      <tr><td><span lang-en>Mining</span><span lang-ar>طريقة التعدين</span></td><td><span lang-en>Solo with your own node, or the pool.groxcoin.com P2Pool (beta)</span><span lang-ar>فردي بالنود بتاعك، أو بول pool.groxcoin.com (تجريبي)</span></td></tr>
       <tr><td><span lang-en>Block time</span><span lang-ar>وقت البلوك</span></td><td><span lang-en>1 minute</span><span lang-ar>دقيقة</span></td></tr>
       <tr><td><span lang-en>Max supply</span><span lang-ar>أقصى عدد</span></td><td><span lang-en>21,000,000 GROX, hard cap, no tail emission</span><span lang-ar>21,000,000 GROX، حد نهائي، من غير إصدار دائم</span></td></tr>
       <tr><td><span lang-en>Block reward</span><span lang-ar>مكافأة البلوك</span></td><td><span lang-en>≈ 4.76 GROX at start, slowly decreasing over years</span><span lang-ar>≈ 4.76 GROX في البداية، وبتقل ببطء على سنين</span></td></tr>
@@ -250,6 +273,8 @@
     <h2><span lang-en>Questions</span><span lang-ar>أسئلة شائعة</span></h2>
     <details><summary><span lang-en>Do I need a mining rig or a GPU?</span><span lang-ar>محتاج جهاز تعدين أو كارت شاشة؟</span></summary>
       <p><span lang-en>No. Grox uses RandomX v2, made for ordinary CPUs. A laptop or office PC can find blocks.</span><span lang-ar>لأ. Grox بتستخدم RandomX v2 المعمول للمعالجات العادية. لابتوب أو كمبيوتر مكتب يقدر يلاقي بلوكات.</span></p></details>
+    <details><summary><span lang-en>Solo or pool?</span><span lang-ar>فردي ولا بول؟</span></summary>
+      <p><span lang-en>Solo: you keep whole blocks but may wait long between them on a small computer. Pool (pool.groxcoin.com): smaller payments, much more often, paid by the blocks themselves. Use the calculator above to see your solo time per block.</span><span lang-ar>فردي: البلوك كله ليك بس ممكن تستنى كتير لو جهازك صغير. البول: مبالغ أصغر بس أكتر بكتير، والبلوكات نفسها هي اللي بتدفع. استخدم الحاسبة فوق تشوف وقتك للبلوك لوحدك.</span></p></details>
     <details><summary><span lang-en>My antivirus flags the miner. Is it safe?</span><span lang-ar>الأنتي فيرس بيعترض على المعدّن. هل هو آمن؟</span></summary>
       <p><span lang-en>Many antivirus programs flag any crypto miner as "potentially unwanted". Grox mines only when you press Start. Download only from GitHub releases and check the SHA256 checksum.</span><span lang-ar>برامج أنتي فيرس كتير بتعتبر أي معدّن "برنامج غير مرغوب". Grox بيعدّن بس لما تدوس ابدأ. نزّل من GitHub بس واتأكد من SHA256.</span></p></details>
     <details><summary><span lang-en>Can anyone see my balance?</span><span lang-ar>حد يقدر يشوف رصيدي؟</span></summary>
@@ -265,6 +290,7 @@
     <div class="links">
       <a href="https://github.com/ahafarag/grox-coin">GitHub<span class="d"><span lang-en>Code and releases</span><span lang-ar>الكود والتحميلات</span></span></a>
       <a href="https://explorer.groxcoin.com" data-explorer><span lang-en>Explorer</span><span lang-ar>المستكشف</span><span class="d"><span lang-en>Blocks, transactions, leaderboard</span><span lang-ar>البلوكات والمعاملات ولوحة الأبطال</span></span></a>
+      <a href="#pool"><span lang-en>Mining pool</span><span lang-ar>البول</span><span class="d">pool.groxcoin.com:3333 (beta)</span></a>
       <a href="https://discord.gg/V5PaU3SSY">Discord<span class="d"><span lang-en>Chat and mining help</span><span lang-ar>دردشة ومساعدة في التعدين</span></span></a>
       <a href="https://t.me/grox_community">Telegram<span class="d"><span lang-en>@grox_community group</span><span lang-ar>جروب @grox_community</span></span></a>
       <a href="https://t.me/grox_coin">Telegram<span class="d"><span lang-en>@grox_coin news</span><span lang-ar>أخبار @grox_coin</span></span></a>
