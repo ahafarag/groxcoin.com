@@ -78,6 +78,18 @@
   tr:last-child td { border-bottom: 0; }
   td:first-child { color: var(--muted); width: 38%; }
   code, .mono { font-family: var(--mono); font-size: 13px; word-break: break-all; }
+  .dt { font-size: 14px; }
+  .dt th { text-align: start; color: var(--muted); font-weight: 500; font-size: 13px; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .dt td, .dt td:first-child { width: auto; color: var(--text); padding: 9px 12px; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+  .dt td.mut { color: var(--muted); }
+  .dt a { color: var(--gold-2); }
+  .scroll { overflow-x: auto; }
+  .pool2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin: 16px 0; }
+  .pool2 .card { min-width: 0; }
+  #mAddr { text-overflow: ellipsis; }
+  .ok { color: var(--green); } .bad { color: var(--red); }
+  #mOut .stats { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 860px) { #mOut .stats { grid-template-columns: 1fr 1fr; } }
   pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-x: auto; margin: 10px 0 0; direction: ltr; text-align: left; }
   pre code { white-space: pre-wrap; word-break: break-all; }
   .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -207,6 +219,31 @@
         <div class="stat"><div class="k"><span lang-en>Expected block every</span><span lang-ar>بلوك متوقع كل</span></div><div class="v" id="pE">—</div></div>
       </div>
       <div class="live"><span class="dot"></span><span lang-en>Live from pool.groxcoin.com</span><span lang-ar>مباشر من pool.groxcoin.com</span><span id="pList"></span></div>
+    </div>
+    <div class="pool2 hide" id="poolX">
+      <div class="card">
+        <h3><span lang-en>Check your mining</span><span lang-ar>شوف تعدينك</span></h3>
+        <p class="note" style="margin-top:0"><span lang-en>Paste the full Grox address you mine with. You'll see your speed, your part of the next pool block and every payout. No login: anyone who knows an address can see this, as with any P2Pool.</span><span lang-ar>حط عنوان Grox الكامل اللي بتعدّن بيه. هتشوف سرعتك ونصيبك من بلوك البول الجاي وكل دفعة وصلتلك. من غير تسجيل دخول: أي حد عارف العنوان يقدر يشوف ده، زي أي P2Pool.</span></p>
+        <form class="field" id="mForm"><input id="mAddr" placeholder="G…" autocomplete="off" spellcheck="false" style="font-size:14px" aria-label="address"><button class="btn primary small" type="submit"><span lang-en>Check</span><span lang-ar>شوف</span></button></form>
+        <div id="mMsg" class="note"></div>
+        <div id="mOut" class="hide">
+          <div class="stats">
+            <div class="stat"><div class="k"><span lang-en>Your speed (15 min)</span><span lang-ar>سرعتك (15 دقيقة)</span></div><div class="v" id="m15">—</div></div>
+            <div class="stat"><div class="k"><span lang-en>Shares in window</span><span lang-ar>أسهمك في النافذة</span></div><div class="v" id="mSh">—</div></div>
+            <div class="stat"><div class="k"><span lang-en>Next pool block pays you</span><span lang-ar>بلوك البول الجاي هيدفعلك</span></div><div class="v" id="mNx">—</div></div>
+            <div class="stat"><div class="k"><span lang-en>Your part of the pool</span><span lang-ar>نصيبك من البول</span></div><div class="v" id="mPc">—</div></div>
+            <div class="stat"><div class="k"><span lang-en>Paid so far</span><span lang-ar>اتدفعلك لحد دلوقتي</span></div><div class="v" id="mTo">—</div></div>
+            <div class="stat"><div class="k"><span lang-en>Blocks you found</span><span lang-ar>بلوكات انت لقيتها</span></div><div class="v" id="mFd">—</div></div>
+          </div>
+          <div class="scroll" style="margin-top:12px"><table class="dt"><thead><tr><th><span lang-en>Block</span><span lang-ar>البلوك</span></th><th><span lang-en>When</span><span lang-ar>امتى</span></th><th><span lang-en>Paid you</span><span lang-ar>اتدفعلك</span></th><th><span lang-en>Status</span><span lang-ar>الحالة</span></th></tr></thead><tbody id="mPay"></tbody></table></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span lang-en>Pool blocks</span><span lang-ar>بلوكات البول</span></h3>
+        <p class="note" style="margin-top:0"><span lang-en>Every block the pool found, who found it and how many miners it paid. Payouts unlock after 60 blocks (about an hour).</span><span lang-ar>كل بلوك لقاه البول، مين لقاه، وكام معدّن قبض منه. الفلوس بتتفتح بعد 60 بلوك (حوالي ساعة).</span></p>
+        <div class="scroll"><table class="dt"><thead><tr><th><span lang-en>Block</span><span lang-ar>البلوك</span></th><th><span lang-en>When</span><span lang-ar>امتى</span></th><th><span lang-en>Found by</span><span lang-ar>لقاه</span></th><th><span lang-en>Miners paid</span><span lang-ar>قبضوا</span></th><th><span lang-en>Status</span><span lang-ar>الحالة</span></th></tr></thead><tbody id="pBl"></tbody></table></div>
+        <p style="margin:10px 0 0"><button class="btn small" id="pMore" type="button"><span lang-en>Show more</span><span lang-ar>اعرض أكتر</span></button></p>
+      </div>
     </div>
     <div class="grid">
       <div class="card">
@@ -367,6 +404,7 @@
       }
     }
     calc(); renderPool();
+    if (typeof renderPoolBlocks === 'function' && PB.length) { renderPoolBlocks(); render_miner(); }
   }
   function calc() {
     const v = parseFloat(($('hs').value || '').replace(',', '.')) * Number($('hsUnit').value);
@@ -395,7 +433,7 @@
     const N = POOL.node || {};
     const rate = N.hashrate_15m > 0 ? N.hashrate_15m : (P.hashRate || 0);
     $('pR').textContent = hr(rate);
-    $('pM').textContent = fmt(P.miners || 0, 0);
+    $('pM').textContent = fmt(POOL.window_miners != null ? POOL.window_miners : (P.miners || 0), 0);
     $('pB').textContent = fmt(P.totalBlocksFound || 0, 0);
     $('pL').textContent = P.lastBlockFoundTime ? ago(P.lastBlockFoundTime) : (ar ? 'لسه' : 'not yet');
     const d = NET ? NET.difficulty : SNAPSHOT.difficulty;
@@ -405,7 +443,66 @@
   }
   async function loadPool() {
     try { const r = await fetch(EXPLORER + '/api/pool', { cache: 'no-store' }); if (r.ok) { POOL = await r.json(); renderPool(); } } catch (e) {}
+    loadPoolBlocks(); if (MINER) loadMiner(MINER, true);
   }
+
+  // Pool explorer: blocks table and per-address lookup
+  const G = a => a == null ? '—' : fmt(a / 1e11, 4) + ' GROX';
+  const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  function when(ts) {
+    const ar = document.documentElement.lang === 'ar';
+    return new Date(ts * 1000).toLocaleString(ar ? 'ar-EG' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  }
+  function status(s) {
+    const ar = document.documentElement.lang === 'ar';
+    if (s === 'unlocked') return '<span class="ok">' + (ar ? 'مفتوحة' : 'unlocked') + '</span>';
+    if (s === 'orphan') return '<span class="bad">' + (ar ? 'ملغي (orphan)' : 'orphaned') + '</span>';
+    const n = parseInt(s, 10); return isNaN(n) ? esc(s) : (ar ? 'تتفتح بعد ~' + n + ' دقيقة' : 'unlocks in ~' + n + ' min');
+  }
+  const blk = h => '<a href="' + EXPLORER + '/#/block/' + h + '" target="_blank" rel="noopener">#' + fmt(h, 0) + '</a>';
+  let PB = [], PBlimit = 10, MINER = lsGet('grox.miner') || '';
+  async function loadPoolBlocks() {
+    try {
+      const r = await fetch(EXPLORER + '/api/pool/blocks?limit=' + PBlimit, { cache: 'no-store' });
+      if (!r.ok) return;
+      const d = await r.json(); PB = d.blocks || [];
+      $('poolX').classList.remove('hide'); renderPoolBlocks();
+      $('pMore').classList.toggle('hide', PB.length < PBlimit || PBlimit >= 100);
+    } catch (e) {}
+  }
+  function renderPoolBlocks() {
+    $('pBl').innerHTML = PB.map(b => '<tr><td>' + blk(b.height) + '</td><td class="mut">' + when(b.ts) + '</td><td>' + esc(b.finder || '—') +
+      '</td><td>' + (b.miners_paid == null ? '—' : b.miners_paid) + '</td><td>' + status(b.status) + '</td></tr>').join('');
+  }
+  $('pMore').onclick = () => { PBlimit = Math.min(100, PBlimit + 20); loadPoolBlocks(); };
+  async function loadMiner(addr, quiet) {
+    const ar = document.documentElement.lang === 'ar';
+    if (!quiet) $('mMsg').textContent = ar ? 'بندوّر…' : 'Looking up…';
+    try {
+      const r = await fetch(EXPLORER + '/api/pool/miner?address=' + encodeURIComponent(addr), { cache: 'no-store' });
+      if (r.status === 404) { $('mOut').classList.add('hide'); $('mMsg').textContent = ar ? 'ده مش عنوان Grox صحيح. استخدم العنوان الكامل اللي بيبدأ بـ G.' : 'That is not a valid Grox address. Use the full address starting with G.'; return; }
+      if (!r.ok) throw 0;
+      const d = await r.json(); MINER = addr; lsSet('grox.miner', addr); render_miner(d);
+    } catch (e) { if (!quiet) $('mMsg').textContent = ar ? 'الخدمة مش متاحة دلوقتي، جرّب كمان شوية.' : 'The lookup is not available right now, try again in a minute.'; }
+  }
+  let MD = null;
+  function render_miner(d) {
+    MD = d || MD; if (!MD) return; d = MD;
+    const ar = document.documentElement.lang === 'ar';
+    $('mOut').classList.remove('hide');
+    $('mMsg').textContent = d.known ? (ar ? 'العنوان: ' : 'Address: ') + d.address :
+      (ar ? 'لسه مفيش أسهم ولا دفعات للعنوان ده في البول. لو لسه بادئ، استنى كام دقيقة.' : 'No shares or payouts for this address yet. If you just started, give it a few minutes.');
+    $('m15').textContent = hr(d.hashrate['15m'] || 0);
+    $('mSh').textContent = fmt(d.window.shares, 0);
+    $('mNx').textContent = d.window.next_payout ? G(d.window.next_payout) : '—';
+    $('mPc').textContent = fmt(d.window.percent, 2) + '%';
+    $('mTo').textContent = G(d.paid.total) + ' · ' + fmt(d.paid.blocks, 0) + (ar ? ' بلوك' : ' blocks');
+    $('mFd').textContent = fmt(d.blocks_found.length, 0);
+    $('mPay').innerHTML = d.payouts.length ? d.payouts.slice(0, 15).map(p => '<tr><td>' + blk(p.height) + '</td><td class="mut">' + when(p.ts) + '</td><td>' + G(p.amount) + '</td><td>' + status(p.status) + '</td></tr>').join('')
+      : '<tr><td colspan="4" class="mut">' + (ar ? 'لسه مفيش دفعات' : 'No payouts yet') + '</td></tr>';
+  }
+  $('mForm').onsubmit = e => { e.preventDefault(); const a = $('mAddr').value.trim(); if (a) loadMiner(a); };
+  if (MINER) { $('mAddr').value = MINER; }
   async function load() {
     try {
       const r = await fetch(EXPLORER + '/api/info', { cache: 'no-store' });
