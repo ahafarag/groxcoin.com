@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grox (GROX) Whitepaper</title>
+<meta name="description" content="Grox (GROX) whitepaper: a private, CPU-mineable coin on RandomX v2 with a 21,000,000 GROX hard cap, 60-second blocks and a public, auditable development fund.">
+<link rel="icon" type="image/png" href="/images/grox-logo.png">
+<meta property="og:title" content="Grox (GROX) Whitepaper">
+<meta property="og:description" content="Private, CPU-mineable, 21M hard cap, RandomX v2. How Grox works, its monetary policy and its public development fund.">
+<meta property="og:image" content="https://groxcoin.com/images/grox-logo.png">
+<meta property="og:url" content="https://groxcoin.com/whitepaper/">
+<meta name="twitter:card" content="summary">
+<style>
+:root { --bg:#0b0c0f; --panel:#14171d; --line:#252a33; --text:#ece9e2; --muted:#9097a1; --gold:#f2b544;
+  --sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+html, body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.65; }
+.wrap { max-width:820px; margin:0 auto; padding:24px 20px 64px; }
+header { display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:8px; }
+header a.home { display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:700; }
+header img { width:34px; height:34px; border-radius:8px; }
+.pdf { background:var(--gold); color:#1a1305; padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px; white-space:nowrap; }
+h1 { font-size:34px; margin:28px 0 4px; }
+h1 + p { color:var(--muted); margin-top:0; }
+h2 { font-size:22px; margin:38px 0 10px; padding-top:6px; border-top:1px solid var(--line); color:var(--gold); }
+a { color:var(--gold); }
+code { font-family:var(--mono); font-size:.92em; background:var(--panel); padding:1px 5px; border-radius:4px; }
+pre { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto; }
+pre code { background:none; padding:0; font-size:13px; }
+table { width:100%; border-collapse:collapse; margin:14px 0; font-size:15px; display:block; overflow-x:auto; }
+th, td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+th { background:var(--panel); }
+footer { margin-top:48px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding-top:14px; }
+@media print {
+  :root { --bg:#fff; --panel:#f4f1ea; --line:#d8d3c8; --text:#16140f; --muted:#555; --gold:#8a5a00; }
+  .pdf, header a.home span.back { display:none; }
+  h2 { break-after:avoid; } table, pre { break-inside:avoid; }
+  a { text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="home" href="/"><img src="../images/grox-logo.png" alt="">Grox</a>
+  <a class="pdf" href="grox-whitepaper.pdf" download>Download PDF</a>
+</header>
+<h1 id="grox-grox-whitepaper">Grox (GROX) Whitepaper</h1>
+<p>Version 1.0 · November 18, 2026</p>
+<h2 id="abstract">Abstract</h2>
+<p>Grox (GROX) is a private, CPU-mineable cryptocurrency with a hard cap of 21,000,000 coins and a new block every 60 seconds. It builds on the Monero codebase (v0.18.5.4), so every transaction hides its sender, receiver and amount by default.</p>
+<p>Grox uses its own proof-of-work, rx/grox: the RandomX v2 program with a Grox-specific salt. It keeps mining efficient on ordinary computers, and existing Monero miners or rented hashrate cannot be pointed at Grox without software built for it. Mining is open to anyone, solo or through a public P2Pool with a 0% fee.</p>
+<h2 id="motivation">Motivation</h2>
+<p>Most proof-of-work coins today are mined by ASIC farms, GPU rigs or rented hashrate, which leaves ordinary users out. Grox is built for the opposite: the computer someone already owns should be enough to mine, and finding a whole block solo should be a realistic event, not a lottery ticket.</p>
+<p>Three choices follow from that goal:</p>
+<ul>
+<li><strong>CPU-first proof-of-work</strong>, so general-purpose processors stay competitive.</li>
+<li><strong>A separate algorithm variant</strong>, so large existing RandomX hashrate cannot be redirected to Grox without dedicated software.</li>
+<li><strong>Private by default</strong>, inherited from Monero, because a coin that people mine at home should not publish what they earn or spend.</li>
+</ul>
+<h2 id="proof-of-work-rxgrox">Proof of work: rx/grox</h2>
+<p>rx/grox is RandomX with two changes: it runs the RandomX v2 program, as specified by the upstream RandomX project (<a href="https://github.com/tevador/RandomX/blob/master/doc/design_v2.md">design notes</a>; 384 instructions per program instead of 256, plus its rounding, AES and prefetch changes), and uses its own Argon2 salt, <code>GroxRandomX\x01</code>. The 2 GB dataset, 2 MB scratchpad, 8 programs per hash and the seed-key schedule are the same as Monero's.</p>
+<p>The salt gives Grox its own dataset and cache, so hashes are not interchangeable with Monero's rx/0 and existing Monero miners, pools and rented hashrate cannot mine Grox as they are. RandomX's design keeps CPUs efficient: it needs fast caches, branch prediction and a large memory footprint, which makes ASICs and GPUs a poor fit.</p>
+<p>The v2 program does more work per hash, but newer processors run it more efficiently, so the net effect depends on the CPU generation. Measured with Grox XMRig on the same machine, back to back (2 threads, <code>--bench=1M</code>, 60-second average, November 18, 2026):</p>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>Generation</th>
+<th>rx/0, Monero (H/s)</th>
+<th>rx/grox (H/s)</th>
+<th>rx/grox vs rx/0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD EPYC 9V45</td>
+<td>AMD Zen 5</td>
+<td>1,082</td>
+<td>1,288</td>
+<td>119%</td>
+</tr>
+<tr>
+<td>AMD EPYC 9V45</td>
+<td>AMD Zen 5</td>
+<td>1,030</td>
+<td>1,205</td>
+<td>117%</td>
+</tr>
+<tr>
+<td>Intel Xeon 6975P-C</td>
+<td>Intel Granite Rapids</td>
+<td>808</td>
+<td>855</td>
+<td>106%</td>
+</tr>
+<tr>
+<td>AMD EPYC 9V74</td>
+<td>AMD Zen 4</td>
+<td>966</td>
+<td>989</td>
+<td>102%</td>
+</tr>
+<tr>
+<td>AMD EPYC 7763</td>
+<td>AMD Zen 3</td>
+<td>904</td>
+<td>750</td>
+<td>83%</td>
+</tr>
+</tbody>
+</table>
+<p>On current CPUs, a machine mines Grox at about the same speed as Monero or faster; on older ones it is somewhat slower. This matches the upstream RandomX v2 design notes.</p>
+<p>Grox takes RandomX v2 unchanged from upstream and adds no new cryptography. RandomX v1 was independently audited before Monero adopted it in 2019; the v2 changes are published by the same authors with their rationale and benchmarks.</p>
+<h2 id="blocks-and-difficulty">Blocks and difficulty</h2>
+<p>Grox targets one block every 60 seconds. Difficulty is set by LWMA (linearly weighted moving average) over the last 90 block solve times, which gives more weight to recent blocks and reacts within minutes when miners join or leave.</p>
+<p>Newly mined coins unlock after 60 blocks, about one hour. Ordinary transaction outputs follow Monero's standard 10-block lock.</p>
+<h2 id="monetary-policy">Monetary policy</h2>
+<p>The total supply is capped at 21,000,000 GROX, divisible to 11 decimal places. There is no tail emission: the block reward shrinks smoothly toward zero and no coin beyond the cap can ever be created.</p>
+<p>Each block's base reward is the coins not yet issued divided by 2^22:</p>
+<p><strong>reward = (21,000,000 − already issued) / 2^22</strong></p>
+<p>At launch this gave about 4.76 GROX per block, and it falls by roughly half every 5.5 years of 60-second blocks. Transaction fees go to the miner in full on top of the base reward.</p>
+<p><strong>Premine: 5% (1,050,000 GROX).</strong> Paid once, at block 2, to the development fund address. It is a consensus rule checked by every node.</p>
+<p><strong>Development fund: 5% of every block's base reward.</strong> The other 95% goes to the miner. Fees are not shared. Every node rejects a block whose dev-fund output is missing or wrong.</p>
+<p><strong>Why no tail emission.</strong> Grox keeps a fixed, predictable supply: 21,000,000 GROX is the most that can ever exist, and every holder can rely on it. The reward falls slowly, so it stays meaningful for decades: about half of today's reward after 5.5 years, about a quarter after 11 years. Over that time, transaction fees are expected to carry a growing share of miners' income. This is a deliberate trade-off: Monero added a small permanent reward to secure its network long term. If Grox ever needs the same, it can only be introduced through a network upgrade that node operators choose to run.</p>
+<h2 id="launch-and-distribution">Launch and distribution</h2>
+<p>The first Grox mainnet block was mined on November 9, 2026. The premine was paid at block 2, as the consensus rules require, and all other coins have been mined in public since then.</p>
+<p>During the first days, some of the developer's own test mining was pointed at the development-fund address by mistake: about 2,300 GROX in blocks 757 to 6,464, before November 14, 2026. These coins stay in the development fund and follow the same rules as the rest of it. Anyone can verify them with the published view key.</p>
+<h2 id="privacy">Privacy</h2>
+<p>Grox inherits Monero's privacy stack, enabled for every transaction with no opt-out:</p>
+<ul>
+<li><strong>Stealth addresses:</strong> each payment goes to a one-time address, so outsiders cannot link payments to a public address.</li>
+<li><strong>Ring signatures (CLSAG, ring size 16):</strong> each spent input is mixed with 15 decoys, hiding which output was spent.</li>
+<li><strong>RingCT with Bulletproofs+:</strong> amounts are hidden, while range proofs show no coins were created from nothing.</li>
+</ul>
+<p>A wallet owner can share a view key to let others see incoming payments without the ability to spend them. Grox uses this for its development fund (see Transparency).</p>
+<h2 id="network-upgrade-v120-block-12000">Network upgrade v1.2.0 (block 12,000)</h2>
+<p>The v1.2.0 hard fork activated at block 12,000 on November 17, 2026 and completed without a chain split. From that block, the 5% development-fund output must pay a dedicated wallet whose view key is public, instead of the original development-fund address.</p>
+<p>The change made the development fund auditable by anyone: every coin it receives from block 12,000 onward can be checked with the published view key.</p>
+<h2 id="mining">Mining</h2>
+<p>There are two ways to mine Grox, both free:</p>
+<ul>
+<li><strong>Solo:</strong> the desktop wallet mines with one click against the user's own node, and every block found pays its full reward to that user.</li>
+<li><strong>Pool:</strong> <code>pool.groxcoin.com:3333</code> runs P2Pool, a decentralized pool with a 0% fee. Each block the pool finds pays every contributing miner directly in that block's coinbase, so there is no pool wallet holding miners' funds and no minimum payout.</li>
+</ul>
+<p>Grox XMRig, a build of XMRig 6.26.0 with rx/grox added and a 0% donation, is published with each release. Pool earnings for any address can be checked on the explorer's pool page.</p>
+<p><strong>Mining only with consent.</strong> Grox supports mining on hardware the miner owns or is allowed to use. The official wallet and Grox XMRig mine only when the user starts them, show what they are doing, and stop when asked. Grox does not support or distribute hidden or bundled miners.</p>
+<h2 id="wallets-and-infrastructure">Wallets and infrastructure</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it does</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desktop wallet</td>
+<td>Node, wallet and one-click solo mining, English and Arabic</td>
+<td>Windows and Linux, <a href="https://github.com/ahafarag/grox-coin/releases/latest">GitHub releases</a></td>
+</tr>
+<tr>
+<td>Command-line tools</td>
+<td><code>groxd</code> node, <code>grox-wallet-cli</code>, <code>grox-wallet-rpc</code></td>
+<td>Same releases, with SHA256 checksums</td>
+</tr>
+<tr>
+<td>Web wallet</td>
+<td>Wallet in the browser; keys never leave the device</td>
+<td><a href="https://wallet.groxcoin.com">wallet.groxcoin.com</a></td>
+</tr>
+<tr>
+<td>Block explorer</td>
+<td>Blocks, transactions, network and pool statistics</td>
+<td><a href="https://explorer.groxcoin.com">explorer.groxcoin.com</a></td>
+</tr>
+<tr>
+<td>Seed nodes</td>
+<td>Three public seed nodes in Europe and the US, found through DNS seeds</td>
+<td>Built into every node</td>
+</tr>
+</tbody>
+</table>
+<p>The node, wallets and miner are open source. Releases are built by public GitHub Actions workflows, so anyone can check that a download matches the published code.</p>
+<h2 id="what-the-development-fund-pays-for">What the development fund pays for</h2>
+<p>The premine and the 5% development fund pay for running and building the network. Grox runs on scalable AWS cloud infrastructure rather than low-cost virtual servers, so the network stays available as it grows:</p>
+<ul>
+<li><strong>Network infrastructure:</strong> seed nodes in Europe and the US, the public node behind the web wallet, the block explorer, the mining pool, content delivery and TLS.</li>
+<li><strong>Web presence:</strong> domains and business hosting for the website and services.</li>
+<li><strong>Development and operations:</strong> the developer's time building releases, wallets, the pool and tools, and running the network day to day.</li>
+<li><strong>Community rewards:</strong> the 100,000 GROX reserve described below.</li>
+</ul>
+<p>GROX has no market price yet, so the fund cannot cover these costs today. Every expense since launch, together with the development time, has been paid by the developer. The fund repays that investment over the long term, which is why it is part of every block rather than a single launch payment.</p>
+<h2 id="transparency">Transparency</h2>
+<p>The development fund is public by design. Its wallet's view key is published, so anyone can load it into a view-only wallet and see every coin it receives. A view key can never spend.</p>
+<pre><code>Address:  GDGSHJXsxp8Y3EnLmGMnMcjLs5Qry6H5vibokRCFxKzNbZkggGkNYjd4iHwoMcJkuQKrsVN1Yt7mQY9s6AM5KVaZFLaUw5Y
+View key: bb0dd5b0061a6c00f23586a5f11c6b08dbd557369137240449d990c89fe59f02
+</code></pre>
+<p><strong>Community reserve: 100,000 GROX.</strong> Moved from the premine to this wallet at block 4,211 and set aside for community rewards such as bounties, translations, tools and contests.</p>
+<h2 id="governance-and-decentralization">Governance and decentralization</h2>
+<p><strong>Keys.</strong> The development fund wallet is held by the developer. Its income is public through the view key, and payments from the community reserve, such as bounties and contest prizes, are announced on the official channels. The fund will move to a multisignature wallet once the project has additional trusted maintainers.</p>
+<p><strong>Upgrades.</strong> Network rules change only through new software releases with a fixed activation height, announced in advance on the website and community channels, as with v1.2.0. A rule change takes effect only on the nodes that choose to run the new version.</p>
+<p><strong>Infrastructure.</strong> Today the developer runs the seed nodes, the block explorer, the public node behind the web wallet and the pool node. The node and wallet software is open source, so anyone can run a full node and mine solo without depending on these services. Community-run seed nodes can be added to the DNS seeds without a new release, and spreading the infrastructure across independent operators is a goal as the community grows.</p>
+<h2 id="specification">Specification</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ticker</td>
+<td>GROX</td>
+</tr>
+<tr>
+<td>Codebase</td>
+<td>Monero v0.18.5.4</td>
+</tr>
+<tr>
+<td>Proof of work</td>
+<td>rx/grox (RandomX v2 program, Grox salt)</td>
+</tr>
+<tr>
+<td>Block time</td>
+<td>60 s</td>
+</tr>
+<tr>
+<td>Difficulty algorithm</td>
+<td>LWMA, 90 blocks</td>
+</tr>
+<tr>
+<td>Maximum supply</td>
+<td>21,000,000 GROX, no tail emission</td>
+</tr>
+<tr>
+<td>Decimals</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Premine</td>
+<td>5% (1,050,000 GROX, block 2)</td>
+</tr>
+<tr>
+<td>Development fund</td>
+<td>5% of each block's base reward</td>
+</tr>
+<tr>
+<td>Coinbase maturity</td>
+<td>60 blocks</td>
+</tr>
+<tr>
+<td>Privacy</td>
+<td>Stealth addresses, CLSAG rings of 16, RingCT with Bulletproofs+</td>
+</tr>
+<tr>
+<td>Address prefix</td>
+<td>G</td>
+</tr>
+<tr>
+<td>Ports</td>
+<td>P2P 19880, RPC 19881, ZMQ 19882</td>
+</tr>
+</tbody>
+</table>
+<h2 id="links">Links</h2>
+<ul>
+<li>Website: <a href="https://groxcoin.com">groxcoin.com</a></li>
+<li>Source code and releases: <a href="https://github.com/ahafarag/grox-coin">github.com/ahafarag/grox-coin</a></li>
+<li>Explorer: <a href="https://explorer.groxcoin.com">explorer.groxcoin.com</a></li>
+<li>Web wallet: <a href="https://wallet.groxcoin.com">wallet.groxcoin.com</a></li>
+<li>Community: <a href="https://discord.gg/V5PaU3SSY">Discord</a>, <a href="https://t.me/grox_community">Telegram</a>, <a href="https://x.com/grox_coin">X @grox_coin</a>, <a href="https://bitcointalk.org/index.php?topic=5599717.0">Bitcointalk ANN</a></li>
+</ul>
+<p>This document describes the Grox software and network as of the date above. It is not financial advice and makes no promise about the value of GROX. The source code is the final reference for every rule described here.</p>
+<footer>&copy; 2026 Grox · <a href="/">groxcoin.com</a></footer>
+</div>
+</body>
+</html>
